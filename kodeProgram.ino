@@ -31,7 +31,7 @@ float kalmanFilter(float rssi) {
 }
 
 float calculateDistance(float rssi) {
-  // float txPower = -70;
+
   float txPower = -45;
   if (rssi == 0) return -1;
   return pow(10, (txPower - rssi) / (10 * 3));
