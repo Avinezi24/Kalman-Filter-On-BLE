@@ -18,7 +18,7 @@ void setup() {
   background(255);
 
   println(Serial.list());
-  String portName = "COM15"; // Ganti dengan port yang sesuai
+  String portName = "COM15";
   myPort = new Serial(this, portName, 115200);
   myPort.clear();
 
@@ -45,18 +45,17 @@ void serialEvent(Serial myPort) {
 
     if (values.length >= 5) {
       try {
-        float val0 = float(values[0]);  // RSSI value
-        float val1 = float(values[1]);  // Filtered RSSI value
-        String val2 = values[4]; // Distance is a string like "aktif"
+        float val0 = float(values[0]);  
+        float val1 = float(values[1]); 
+        String val2 = values[4];
 
  
         if (currentIndex < maxIterations) {
           rssi[currentIndex] = val0;
           filteredRSSI[currentIndex] = val1;
-          distances[currentIndex] = val2;  // Store "aktif" or whatever string is received
+          distances[currentIndex] = val2; 
           currentIndex++;
         } else {
-          // Shift data to make room for new values
           arrayCopy(rssi, 1, rssi, 0, maxIterations - 1);
           arrayCopy(filteredRSSI, 1, filteredRSSI, 0, maxIterations - 1);
           arrayCopy(distances, 1, distances, 0, maxIterations - 1);
@@ -96,7 +95,7 @@ void plotLine(float[] data, color c, String label) {
   beginShape();
   for (int i = 0; i < currentIndex; i++) {
     float x = map(i, 0, maxIterations - 1, 50, width - 50);
-    float y = map(data[i], -30, -100, 400, 50); // Adjust scale
+    float y = map(data[i], -30, -100, 400, 50);
     vertex(x, y);
   }
   endShape();
@@ -116,10 +115,10 @@ void drawLegendRSSI() {
 
 boolean isNumeric(String str) {
   try {
-    Float.parseFloat(str);  // Try converting to a float
-    return true;  // Success means it's a valid numeric string
+    Float.parseFloat(str); 
+    return true;
   } catch (NumberFormatException e) {
-    return false;  // If an exception occurs, it's not numeric
+    return false;
   }
 }
 
@@ -136,11 +135,10 @@ void displayDistances() {
       counter = 0;
     }
 
-    // If the distance is numeric, format it
     String distanceText = distances[i];
     if (isNumeric(distanceText)) {
       float distanceValue = float(distanceText);
-      distanceText = nf(distanceValue, 1, 2);  // Format the distance
+      distanceText = nf(distanceValue, 1, 2);
     }
 
     text("Status[" + i + "]: " + distanceText, startX, startY);
